@@ -43,7 +43,23 @@ const RootQuery = new GraphQLObjectType({
         //TODO: Later when mongoose add, change this query
         return clients.find(client => client.id === args.id);
       }
+    },
+    //Get All Projects
+    projects: {
+      type: new GraphQLList(ProjectType),
+      resolve (parent, args) {
+        return projects
+      }
+    },
+    //Get Project by ID
+    project: {
+      type: ProjectType,
+      args: {id: {type: GraphQLID}},
+      resolve(parent, args) {
+        return projects.find(project => project.id === args.id)
+      }
     }
+
   }
 })
 
