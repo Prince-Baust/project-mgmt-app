@@ -1,0 +1,23 @@
+{
+  "name": "project-mgmt-app",
+  "version": "1.0.0",
+  "description": "A full stack MERN app with GraphQL",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev-start": "nodemon server/index.js"
+  },
+  "author": "MD. Maruf Al Hossain Prince",
+  "license": "MIT",
+  "dependencies": {
+    "colors": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.8.0",
+    "mongoose": "^6.4.0"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.1"
+  }
+}
