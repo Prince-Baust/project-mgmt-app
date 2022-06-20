@@ -1,5 +1,13 @@
 // const {projects, clients} = require('../sampleData');      SampleData for testing without db
-const {GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList, GraphQLNonNull} = require('graphql');
+const {
+  GraphQLObjectType,
+  GraphQLID,
+  GraphQLString,
+  GraphQLSchema,
+  GraphQLList,
+  GraphQLNonNull,
+  GraphQLEnumType
+} = require('graphql');
 const Client = require('../models/clientModel');
 const Project = require('../models/projectModel');
 
@@ -39,7 +47,7 @@ const RootQuery = new GraphQLObjectType({
     // Get all clients
     clients: {
       type: new GraphQLList(ClientType),
-      resolve(parent, args){
+      resolve(parent, args) {
         // return clients;                                        // Clients from sample data
         return Client.find();                                     //Clients from db
       }
@@ -56,7 +64,7 @@ const RootQuery = new GraphQLObjectType({
     //Get All Projects
     projects: {
       type: new GraphQLList(ProjectType),
-      resolve (parent, args) {
+      resolve(parent, args) {
         // return projects                  // Projecs from sample data
 
         return Project.find();              // Projects from db
@@ -104,6 +112,37 @@ const mutation = new GraphQLObjectType({
       },
       resolve(parent, args) {
         return Client.findByIdAndRemove(args.id);
+      }
+    },
+    //Add a new project
+    addProject: {
+      type: ProjectType,
+      args: {
+        name: {type: GraphQLNonNull(GraphQLString)},
+        description: {type: GraphQLNonNull(GraphQLString)},
+        status: {
+          type: new GraphQLEnumType(
+            {
+              name: 'ProjectStatus',
+              values: {
+                'new': {value: 'Not Started'},
+                'progress': {value: 'In Progress'},
+                'completed': {value: 'Completed'}
+              }
+            }),
+          defaultValue: 'Not Started'
+        },
+        clientId: {type: GraphQLNonNull(GraphQLID)}
+      },
+      resolve (parent, args) {
+        const project = new Project({
+          name: args.name,
+          description: args.description,
+          status: args.status,
+          clientId: args.clientId
+        });
+        return project.save();
+
       }
     }
   }
