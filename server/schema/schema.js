@@ -134,7 +134,7 @@ const mutation = new GraphQLObjectType({
         },
         clientId: {type: GraphQLNonNull(GraphQLID)}
       },
-      resolve (parent, args) {
+      resolve(parent, args) {
         const project = new Project({
           name: args.name,
           description: args.description,
@@ -151,6 +151,39 @@ const mutation = new GraphQLObjectType({
       args: {id: {type: GraphQLNonNull(GraphQLID)}},
       resolve(parent, args) {
         return Project.findByIdAndRemove(args.id);
+      }
+    },
+    //Update a project
+    updateProject: {
+      type: ProjectType,
+      args: {
+        id: {type: GraphQLNonNull(GraphQLID)},
+        name: {type: GraphQLString},
+        description: {type: GraphQLString},
+        status: {
+          type: new GraphQLEnumType(
+            {
+              name: 'ProjectStatusUpdate',
+              values: {
+                'new': {value: 'Not Started'},
+                'progress': {value: 'In Progress'},
+                'completed': {value: 'Completed'}
+              }
+            }),
+          defaultValue: 'Not Started'
+        }
+      },
+      resolve(parent, args) {
+        return Project.findByIdAndUpdate(args.id,
+          {
+            $set: {
+              name: args.name,
+              description: args.description,
+              status: args.status
+            }
+          },
+          {new: true}
+        )
       }
     }
   }
