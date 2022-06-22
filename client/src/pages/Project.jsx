@@ -12,8 +12,8 @@ const Project = () => {
     }
   );
 
-  if (loading) <Spinner />
-  if (error) <p>Something went wrong!</p>
+  if (loading) return <Spinner />
+  if (error) return <p>Something went wrong!</p>
   const {name, description, status, client} = data.project;
 
   return (

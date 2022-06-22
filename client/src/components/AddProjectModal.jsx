@@ -1,8 +1,9 @@
 import {FaList} from "react-icons/fa";
 import {useState} from "react";
-import {ADD_CLIENT} from "../mutation/clientMutation";
 import {GET_CLIENTS} from "../queries/clientQueries";
 import {useMutation, useQuery} from "@apollo/client";
+import {ADD_PROJECT} from "../mutation/projectMutation";
+import {GET_PROJECTS} from "../queries/projectQueries";
 
 
 const AddProjectModal = () => {
@@ -10,6 +11,18 @@ const AddProjectModal = () => {
   const [description, setDescription] = useState('');
   const [clientId, setClientId] = useState('');
   const [status, setStatus] = useState('new');
+
+  const [addProject] = useMutation(ADD_PROJECT, {
+    variables: {name, description, clientId, status},
+    update(cache, {data: {addProject}}) {
+      const {projects} = cache.readQuery({query: GET_PROJECTS});
+
+      cache.writeQuery({
+        query: GET_PROJECTS,
+        data: {projects: [...projects, addProject]}
+      })
+    }
+  })
 
   //Get clients for select
   const {loading, errror, data} = useQuery(GET_CLIENTS);
@@ -20,7 +33,7 @@ const AddProjectModal = () => {
     if (name === '' || description === '' || status === '')
       alert('All fields are required!');
 
-    // addClient(name, email, phone);
+    addProject(name, description, clientId, status)
 
     setName('');
     setDescription('');
