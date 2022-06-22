@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import {ApolloProvider, ApolloClient, InMemoryCache} from '@apollo/client';
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
+import Project from "./pages/Project";
 
 //TODO: deleting client/project ui update warning solution to be updated
 
@@ -41,6 +42,7 @@ function App() {
           <div className="container">
             <Routes>
               <Route path="/" element={<Home/>} />
+              <Route path="/projects/:id" element={<Project/>} />
               <Route path='*' element={<NotFound/>} />
             </Routes>
           </div>
