@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev-start": "nodemon server/index.js"
+    "dev-start": "nodemon server/index.js",
+    "client": "npm start --prefix client",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "author": "MD. Maruf Al Hossain Prince",
   "license": "MIT",
