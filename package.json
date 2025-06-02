@@ -4,6 +4,7 @@
   "description": "A full stack MERN app with GraphQL",
   "main": "index.js",
   "scripts": {
+    "build": "your build command here",
     "start": "node server/index.js",
     "dev-start": "nodemon server/index.js",
     "client": "npm start --prefix client",
